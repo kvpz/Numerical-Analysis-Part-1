@@ -1,0 +1,69 @@
+#define _USE_MATH_DEFINES //used for the value of pi (M_PI)
+#include <iostream>
+#include <fstream>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+using namespace std;
+
+      void nfactorial(int n,double& nfact) {
+   
+       int i;
+       nfact=1.0;
+
+       for (i=1;i<=n;i++) {
+        nfact=nfact*i;
+		
+       }
+	  
+      }
+
+      double power(double x,int N) {
+ 
+      double pow=1.0;
+      for (int i=1;i<=N;i++)
+       pow*=x;
+	  cout << "current power value: " << pow << endl;
+      return pow;
+
+      }
+
+      int main() {
+
+      int N; //nth term to be evaluated
+      double PN,exact,term,x,nfact;
+	  int sign = -1;
+	  int fourth = 4;
+      N=6; 
+      x=M_PI/4;  //one fo the x bounds [0,PI]
+      PN=1.0;  //The first term is equal to 1
+
+	  //j iterates through taylor series terms
+	  //nfact is the current term's factorial
+	  //PN the total sum for Pn(x)
+      for (int j=1;j<=N;j++) {
+       nfactorial(2*j,nfact); 
+       term=power(x,j*2)/nfact;
+	   term *= fourth; 
+	   term *= sign;  //-,+,-,+ the sign of each relevant term alternates
+       PN=PN+term; //PN is the series
+	   sign *= -1; //+,-,+,- change the sign after every term
+	   fourth *= 4; //this is the constsant each term is multiplied
+	   cout << "Term: " << term << endl;
+	   cout << "current sum PN: " << PN << "\n\n";
+      } 
+
+      exact=cos(2*x); //assigns the exact value of f(x)
+      std::cout << "x= " << x << " and N= " << N << '\n';
+      std::cout << "Taylor series approximation is: " << PN << '\n';
+      std::cout << "cos(x) is: " << exact << '\n';
+      std::cout << "error is: " << fabs(exact-PN) << '\n'; //fabs() returns absolute value in floating point of error
+
+      }
+
+
+	  /*
+	  cos(x)=1 - 2x^2 + (16/4!)x^4 - (64/6!)x^6 + (256/8!)x^8 -...
+	  Look at MIT:When does a function equal its taylor series
+	  */
